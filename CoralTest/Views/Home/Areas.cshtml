@@ -1,0 +1,39 @@
+﻿@model AreasViewModel
+@{
+    Layout = null;
+}
+
+@using (Html.BeginForm("Areas", "Home", FormMethod.Post, new { id = "InfoForm" }))
+{
+    <div class="row">
+        <div class="col">
+            <div class="form-group">
+                <div class="requared">@Html.LabelFor(e => e.BusinessAreas, "Business Areas")</div>
+                <ul>
+                    @foreach (var item in Enum.GetValues(typeof(CoralTest.Entity.BusinessAreas)).Cast<CoralTest.Entity.BusinessAreas>())
+                    {
+                        <li>
+                            <input type="checkbox"
+                                   name="BusinessAreas"
+                                   value="@item"
+                                   checked="@Model.BusinessAreas.Contains(item)" />
+                            @item.ToString()
+                        </li>
+                    }
+                </ul>
+                <div>@Html.ValidationMessageFor(e => e.BusinessAreas)</div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="form-group">
+                <div class="requared">@Html.LabelFor(e => e.Comments)</div>
+                <div>@Html.TextAreaFor(e => e.Comments)</div>
+                <div>@Html.ValidationMessageFor(e => e.Comments)</div>
+            </div>
+        </div>
+    </div>
+    <div class="row float-right mr-5">
+        <button class="btn" type="submit" value="ContactInfo">Back</button>
+        <button class="btn btn-primary" type="submit" value="Address">Next</button>
+    </div>
+}

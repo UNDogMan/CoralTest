@@ -1,0 +1,45 @@
+﻿@model AddressViewModel
+@{
+    Layout = null;
+}
+@using (Html.BeginForm("Address", "Home", FormMethod.Post, new { id = "InfoForm" }))
+{
+<div class="row">
+    <div class="col-6 text-right">
+        <div class="form-group requared">
+            @Html.LabelFor(e => e.Country)
+            @Html.TextBoxFor(e => e.Country)
+            @Html.ValidationMessageFor(e => e.Country)
+        </div>
+        <div class="form-group requared">
+            @Html.LabelFor(e => e.OfficeName)
+            @Html.TextBoxFor(e => e.OfficeName)
+            @Html.ValidationMessageFor(e => e.OfficeName)
+        </div>
+        <div class="form-group requared">
+            @Html.LabelFor(e => e.Address)
+            @Html.TextBoxFor(e => e.Address)
+            @Html.ValidationMessageFor(e => e.Address)
+        </div>
+        <div class="form-group requared">
+            @Html.LabelFor(e => e.PostalCode)
+            @Html.TextBoxFor(e => e.PostalCode)
+            @Html.ValidationMessageFor(e => e.PostalCode)
+        </div>
+        <div class="form-group requared">
+            @Html.LabelFor(e => e.City)
+            @Html.TextBoxFor(e => e.City)
+            @Html.ValidationMessageFor(e => e.City)
+        </div>
+        <div class="form-group requared">
+            @Html.LabelFor(e => e.State)
+            @Html.TextBoxFor(e => e.State)
+            @Html.ValidationMessageFor(e => e.State)
+        </div>
+    </div>
+</div>
+<div class="row float-right mr-5">
+    <button class="btn" type="submit" value="Areas">Back</button>
+    <button class="btn btn-primary" type="submit" value="Password">Next</button>
+</div>
+}

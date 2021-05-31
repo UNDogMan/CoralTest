@@ -1,0 +1,120 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $("div#list > div").click(function (e) {
+                var actionUrl = $(e.currentTarget).attr('action');
+                if ($(e.currentTarget).hasClass("active-list")) {
+                    var jqxhr = $.get(actionUrl);
+                    jqxhr.done(function (data) {
+                        var number = jqxhr.getResponseHeader("number");
+                        var currentform = jqxhr.getResponseHeader("currentform");
+                        $("span#StepNum").text(number);
+                        $("span#Step").text(currentform);
+                        $("#formPlace").html(data);
+                    })
+                }
+            });
+
+            var jqxhr = $.get("Home/ContactInfo");
+            jqxhr.done(function (data) {
+                var number = jqxhr.getResponseHeader("number");
+                var currentform = jqxhr.getResponseHeader("currentform");
+                SetList(number);
+                $("span#StepNum").text(number);
+                $("span#Step").text(currentform);
+                $("#formPlace").html(data);
+            })
+
+            $('body').on('DOMSubtreeModified', '#formPlace', function () {
+                console.log("Modified");
+
+                $("#InfoForm").submit(function (e) {
+                    e.preventDefault();
+                    
+                    var actionUrl = $(this).attr('action');
+                    var value = $(document.activeElement).attr('value');
+                    var jqxhr = $.ajax({
+                        method: "POST",
+                        url: actionUrl,
+                        data: $(this).serialize(),
+                        headers: {
+                            'action': value
+                        }
+                    });
+                    jqxhr.done(function (res) {
+                        var number = jqxhr.getResponseHeader("number");
+                        var currentform = jqxhr.getResponseHeader("currentform");
+                        SetList(number);
+                        $("span#StepNum").text(number);
+                        $("span#Step").text(currentform);
+                        $("#formPlace").html(res);
+                    });
+                });
+            });
+        });
+
+
+        function SetList(number) {
+            var listitems = $("#list > div");
+            for (var i = 1; i <= 5; ++i) {
+                listitems[i - 1].children[0].classList.remove("circle-num-active");
+                listitems[i - 1].children[0].classList.remove("circle-num-disable");
+                listitems[i - 1].classList.remove("active-list");
+                listitems[i - 1].classList.remove("btn-link");
+                listitems[i - 1].classList.remove("disable-list");
+                if (i < number && number != 5) {
+                    listitems[i - 1].children[0].classList.add("circle-num-active");
+                    listitems[i - 1].classList.add("btn-link");
+                    listitems[i - 1].classList.add("active-list");
+                }
+                if (i == number) {
+                    listitems[i - 1].children[0].classList.add("circle-num-active");
+                }
+                if (i > number) {
+                    listitems[i - 1].children[0].classList.add("circle-num-disable");
+                    listitems[i - 1].classList.add("disable-list");
+                }
+            }
+        };
+    </script>
+}
+
+<div class="row flex-column mt-4 mb-5">
+    <h5>New User Registration</h5>
+    <div>STEP <span id="StepNum">N</span>: <span id="Step">AAAAAAAA</span></div>
+</div>
+<div class="row">
+    <div class="col-3">
+        <div id="list">
+            <div class="row mb-3" action="/Home/ContactInfo">
+                <div class="circle-num">1</div>
+                <div class="align-self-center list-text">Contact info</div>
+            </div>
+            <div class="row mb-3" action="/Home/Areas">
+                <div class="circle-num">2</div>
+                <div class="align-self-center list-text">Areas</div>
+            </div>
+            <div class="row mb-3" action="/Home/Address">
+                <div class="circle-num">3</div>
+                <div class="align-self-center list-text">Address</div>
+            </div>
+            <div class="row mb-3" action="/Home/Password">
+                <div class="circle-num">4</div>
+                <div class="align-self-center list-text">Password</div>
+            </div>
+            <div class="row mb-3">
+                <div class="circle-num">5</div>
+                <div class="align-self-center list-text">Completed</div>
+            </div>
+        </div>
+    </div>
+    <div class="col">
+        <div id="formPlace">
+
+        </div>
+    </div>
+</div>
